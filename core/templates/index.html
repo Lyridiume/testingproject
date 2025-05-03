@@ -1,19 +1,88 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home Page</title>
-  </head>
-  <body>
-    <main>
-        <h1>AHHHHHHHHHHHHHHHHHH</h1>
-        <h6>Testing</h6>
+{% extends "./about.html" %}
+{% load static %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+
+<main>
+
+  <section class="py-5 text-center" style="background-color: coral;background-size:2000px 400px;  position: relative;text-align: center;color: white;">
+    <img src="media/images/site-bannered.jpeg" alt="Restaurant banner" style="border: 5px solid #555;">
+    <div class="row py-lg-5" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="h1 fw-bold" style="color:black;padding-right:350px">Search,Choose,Buy</h1>
+        <p class="lead text-muted">This is certainly a site</p>
+        <p>
+          <a href="https://ge.itstep.org/" class="btn btn-primary my-2">Site made thanks to:</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="album py-5 bg-light">
+    <div class="container">
+      <form action="" class="row g-3">
+        <span class="col-auto table-info d-flex flex-row mb-3" style="width: 80%;">
+          <select name="category" class="form-select w-100 border border-warning-subtle"  aria-label="Default select example">
+          <option value="">All Categories</option>
+          {% for cat in categories %}
+              <option value="{{cat.id}}" {% if category == cat.id|stringformat:"s" %}selected{% endif %}>
+                  {{ cat }}
+              </option>
+          {% endfor %}
+          </select>
+          <select name="spice_level" class="form-select w-100 min-w-min border border-warning-subtle" aria-label="Default select example">
+            <option value="">Spice level</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+          <select name="has_chestnuts" class="form-select w-150 min-w-min fluid-container position-relative border border-warning-subtle" aria-label="Default select example">
+            <option value="">Has chestnuts?</option>
+            <option value="True">Yes</option>
+            <option value="False">No</option>
+          </select>
+          <select name="is_vegetarian" class="form-select w-150 min-w-min border border-warning-subtle" aria-label="Default select example">
+            <option value="">Is vegetarian?</option>
+            <option value="False">No</option>
+            <option value="True">Yes</option>
+          </select>
+          {% if search_query %}
+             <input type="hidden" name='q' value="{{search_query}}">
+          {% endif %}
+        </span>
+        <span class="col-auto">
+          <button type="submit" class="btn btn-outline-info">Filter</button>
+        </span>
+      </form>
+      <div class="pb-3 h5">All Dishes</div>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
+
         {% for dish in dishes %}
-          {{ dish }}
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <img class="img-fluid" alt="Responsive image" src="{{ dish.dish_image.url }}">
+            <div class="card-body">
+              <p class="card-text">
+                <a class="text-dark text-decoration-none" href="{{ dish.get_absolute_url }}">{{ dish.dish_name }}</a>
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted"></small>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {% endfor %}
-        <a href="{% url 'core:about' %}">About Page</a>
-    </main>
-  </body>
-</html>
+
+      </div>
+    </div>
+  </div>
+
+
+</main>
+
+{% endblock %}

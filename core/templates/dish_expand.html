@@ -1,0 +1,70 @@
+{% extends "./about.html" %}
+{% load static %}
+{% block title %}
+{{ dish_detail.name }}
+{% endblock %}
+{% block content %}
+<div class="container">
+    <main class="pt-5">
+        <div class="row g-3">
+            <div class="col-md-5 col-lg-5 order-md-first">
+                <img class="img-fluid mx-auto d-block" alt="Responsive image" src="{{ dish_detail.dish_image.url }}">
+            </div>
+            <div class="col-md-7 col-lg-7 ps-md-3 ps-lg-5">
+                <h1 class="mb-0 h4">{{ dish_detail.title }}</h1>
+                <p>Category: <span class="lead"> {{ dish_detail.dish_category }}</span></p>
+                <div class="border">
+                    <div class="col border-bottom">
+                        <div class="row p-3">
+                            <div class="col-6 text-end"><span class="h4 fw-bold">Price:  ${{ dish_detail.price }}</span></div>
+                        </div>
+                    </div>
+                    <div class="col border-bottom row p-3">
+                        <dt class="col-sm-3 text-truncate">Description</dt>
+                        <dd class="col-sm-9">{{dish_detail.dish_description|slice:":355"}}...</dd>
+                    </div>
+                    <div class="col">
+                        <div class="row p-3">
+                            <div class="col-6">
+                                <label for="select">Qty</label>
+                                <select id="select">
+                                    <option value="">1</option>
+                                    <option value="">2</option>
+                                    <option value="">3</option>
+                                    <option value="">4</option>
+                                </select>
+
+                            </div>
+                            <div class="col-6 text-end">
+<button type="button" id="add-to-basket" value="{{dish_detail.id}}" class="btn btn-secondary btn-sm">Add to basket</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    $(document).on('click', '#add-to-basket', function (act) {
+        act.preventDefault();
+        console.log($('#select option:selected').text());
+        $.ajax({
+            type: 'POST',
+            url: '{% url "basket:basket_add" %}',
+            data: {
+               dishid: $('#add-to-basket').val(),
+               dishqty: $('#select option:selected').text(),
+               csrfmiddlewaretoken: "{{csrf_token}}",
+               action: 'post'
+        },
+        success: function (json) {
+        console.log(json)
+           document.getElementById("basket-qty").innerHTML = json.qty
+        },
+        error: function (xhr,errmsg,err) {}
+        });
+    })
+</script>
+
+{% endblock %}

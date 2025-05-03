@@ -16,12 +16,24 @@ Including another URLconf
 """
 from core.views import index
 from django.contrib import admin
-from django.urls import path
 from django.urls import include, path
 from debug_toolbar.toolbar import debug_toolbar_urls
+from django.conf import settings
+from django.conf.urls.static import static
+#from core.views import DishListView,DishDetailView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('core.url',namespace='core')),
-    path('about/',include('core.url',namespace='core'))
-]
+    #path('dish_expand/<int:dish_pk>', include('core.url',namespace='core'), name="dish_expand"),
+    #path('',DishListView.as_view(),name="index"),
+    path('about/',include('core.url',namespace='core')),
+    path('dish/',include('core.url',namespace='core')),
+    path("add_dish/",include("core.url",namespace='core')),
+    path("search/",include("core.url",namespace='core')),
+    path('basket/',include('basket.urls',namespace='basket')),
+] + debug_toolbar_urls()
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,document_root =settings.MEDIA_ROOT)

@@ -7,5 +7,6 @@ app_name = 'basket'
 urlpatterns = [
     path('',views.basket_general,name='basket_general'),
     path('add_dish/',views.basket_add,name='basket_add'),
-    path('delete_dish/',views.basket_delete,name='basket_delete')
+    path('delete_dish/',views.basket_delete,name='basket_delete'),
+    path('update_dish/',views.basket_update,name='basket_update'),
 ]
